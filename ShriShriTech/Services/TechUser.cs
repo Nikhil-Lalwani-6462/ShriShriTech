@@ -10,7 +10,7 @@ namespace ShriShriTech.Services
         public Task<bool> AddUser(user user);
         public Task<bool> VerifyIdentityByEmail(string email);
     }
-    public class TechUser 
+    public class TechUser : ITechUser
     {
         private readonly ShriShriTechContext _context;
         private readonly string _connectionString;
@@ -24,20 +24,20 @@ namespace ShriShriTech.Services
            if(user == null) 
                 return false;
 
-            var clientId = (from obj in _context.ClientAdmins
+            var client = await (from obj in _context.ClientAdmins
                            where obj.StoreName == user.StoreName
-                           select obj.Id).FirstOrDefaultAsync();
+                           select obj).FirstOrDefaultAsync();
             var saltKey = passSalt();
             var hash = passHash(user.Pass,saltKey);
 
-            if (clientId == null)
+            if (client.Id == null)
                 return false;
                 using (SqlConnection con = new SqlConnection(_connectionString)) 
                 {
                     using (SqlCommand cmd = new SqlCommand("Add_TechUser", con))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("Client_Id", clientId);
+                        cmd.Parameters.AddWithValue("Client_Id", client.Id);
                         cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", user.LastName);
                         cmd.Parameters.AddWithValue("@Email", user.Email);
@@ -52,6 +52,8 @@ namespace ShriShriTech.Services
                         cmd.Parameters.AddWithValue("@PinCode", user.Pincode);
                         cmd.Parameters.AddWithValue("@Store_Address", user.Store_Address);
                         cmd.Parameters.AddWithValue("@State", user.State);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
                         return true;
 
 

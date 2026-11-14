@@ -20,3 +20,66 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* ===== ShriShriTech shared styles ===== */
+
+:root {
+    --app-radius: .5rem;
+}
+
+/* Page title */
+.app-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Every content block (forms, tables, summaries) sits in this card */
+.app-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: var(--app-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+@media (min-width: 768px) {
+    .app-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Forms */
+.app-form .form-label {
+    font-weight: 600;
+}
+
+.app-form .form-control,
+.app-form .form-select {
+    font-size: 16px; /* stops iPhones from zooming into inputs */
+}
+
+.app-form .text-danger {
+    font-size: .875rem;
+}
+
+/* Tables */
+.app-table thead {
+    background: #212529;
+    color: #fff;
+}
+
+.app-table th,
+.app-table td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Buttons stack full width on phones */
+@media (max-width: 575.98px) {
+    .app-actions .btn {
+        width: 100%;
+        margin-bottom: .5rem;
+    }
+}
