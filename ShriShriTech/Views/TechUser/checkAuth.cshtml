@@ -1,0 +1,72 @@
+﻿@model ShriShriTech.Data.CheckAuth
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+
+<div class="row justify-content-center mt-4">
+    <div class="col-12 col-sm-10 col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h4 class="text-center fw-bold mb-4">Login</h4>
+
+                @using (Html.BeginForm("checkAuth", "TechUser", FormMethod.Post))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-2" })
+
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Pass, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.Pass, new { @class = "form-control", placeholder = "Enter your password" })
+                        @Html.ValidationMessageFor(m => m.Pass, "", new { @class = "text-danger" })
+                    </div>
+
+                    @* <div class="form-check mb-3">
+                        @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input" })
+                        @Html.LabelFor(m => m.RememberMe, new { @class = "form-check-label" })
+                    </div> *@
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill">Login</button>
+                        @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-secondary flex-fill" })
+                    </div>
+                }
+
+                <p class="text-center mt-3 mb-0">
+                    Don't have an account?
+                    <a asp-controller="TechUser" asp-action="TechUserIndex">Register here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+
+
+
+

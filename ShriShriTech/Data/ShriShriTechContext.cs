@@ -84,7 +84,9 @@ public partial class ShriShriTechContext : DbContext
         {
             entity.ToTable("Client_Admin");
 
-            entity.Property(e => e.ContactNo).HasColumnName("Contact_No");
+            entity.Property(e => e.ContactNo)
+                .HasMaxLength(255)
+                .HasColumnName("Contact_No");
             entity.Property(e => e.GstNo).HasColumnName("Gst_No");
             entity.Property(e => e.StoreName).HasColumnName("Store_Name");
         });

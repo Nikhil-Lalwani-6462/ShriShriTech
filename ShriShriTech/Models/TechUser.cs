@@ -15,7 +15,7 @@ public partial class TechUser
 
     public string? Email { get; set; }
 
-    public int? ContactNo { get; set; }
+    public long? ContactNo { get; set; }
 
     public string? PasswordHash { get; set; }
 

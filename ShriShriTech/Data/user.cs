@@ -19,9 +19,9 @@ namespace ShriShriTech.Data
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Contact No is required")]
-        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Enter a 10-digit mobile number")]
+        [Range(1000000000, 9999999999, ErrorMessage = "Enter a valid 10-digit mobile number")]
         [Display(Name = "Contact No")]
-        public string? ContactNo { get; set; }
+        public long ContactNo { get; set; }
 
         [Required(ErrorMessage = "Store Name is required")]
         [Display(Name = "Store Name")]
@@ -42,7 +42,7 @@ namespace ShriShriTech.Data
 
         [Required(ErrorMessage = "Pincode is required")]
         [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "Enter a 6-digit pincode")]
-        public string? Pincode { get; set; }
+        public int Pincode { get; set; }
 
         [Required(ErrorMessage = "District is required")]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Only letters and spaces are allowed")]
@@ -61,5 +61,7 @@ namespace ShriShriTech.Data
         [Compare("Pass", ErrorMessage = "Confirm Password must match Password")]
         [Display(Name = "Confirm Password")]
         public string? ConfirmPass { get; set; }
+
+        public bool RememberMe { get; set; }
     }
 }

@@ -11,7 +11,7 @@ public partial class ClientAdmin
 
     public string UserEmail { get; set; } = null!;
 
-    public int ContactNo { get; set; }
+    public string? ContactNo { get; set; }
 
     public string StoreName { get; set; } = null!;
 

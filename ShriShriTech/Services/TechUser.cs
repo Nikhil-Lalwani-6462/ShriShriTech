@@ -9,6 +9,8 @@ namespace ShriShriTech.Services
     {
         public Task<bool> AddUser(user user);
         public Task<bool> VerifyIdentityByEmail(string email);
+
+        public Task<bool> checkAuth(CheckAuth user);
     }
     public class TechUser : ITechUser
     {
@@ -30,7 +32,7 @@ namespace ShriShriTech.Services
             var saltKey = passSalt();
             var hash = passHash(user.Pass,saltKey);
 
-            if (client.Id == null)
+            if (client == null)
                 return false;
                 using (SqlConnection con = new SqlConnection(_connectionString)) 
                 {
@@ -102,7 +104,21 @@ namespace ShriShriTech.Services
            return Random.Shared.Next(10,100);
         }
 
+        public async Task<bool> checkAuth(CheckAuth user)
+        {
 
-
+            var usrObj = await (from usr in _context.TechUsers
+                                where usr.Email == user.Email && usr.IsActive == true
+                                select usr).FirstOrDefaultAsync();
+            if (usrObj != null)
+            {
+                var saltKey = usrObj?.PasswordSalt;
+                var hashPass = passHash(user.Pass, saltKey);
+                if (usrObj.PasswordHash == hashPass)
+                    return true;
+                return false;
+            }
+            return false;
+        }
     }
 }

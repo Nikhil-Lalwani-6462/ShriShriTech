@@ -1,9 +1,10 @@
 ﻿@model ShriShriTech.Data.user
 @{
     ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
 
-<h2 class="app-title">Registration</h2>
+<h2 class="app-title text-center">Registration</h2>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -13,13 +14,11 @@
     </div>
 }
 
-@using (Html.BeginForm("TechUserIndex", "TechUser", FormMethod.Post, new { @class = "app-form" }))
-{
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="app-card">
+    @using (Html.BeginForm("TechUserIndex", "TechUser", FormMethod.Post, new { @class = "app-form" }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <!-- Personal details -->
-    <div class="app-card">
-        <h5 class="mb-3">Personal Details</h5>
         <div class="row g-3">
             <div class="col-12 col-md-6">
                 @Html.LabelFor(m => m.FirstName, new { @class = "form-label" })
@@ -38,16 +37,9 @@
             </div>
             <div class="col-12 col-md-6">
                 @Html.LabelFor(m => m.ContactNo, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.ContactNo, new { @class = "form-control", maxlength = 10, inputmode = "numeric" })
+                @Html.TextBoxFor(m => m.ContactNo, new { @class = "form-control", maxlength = 10, inputmode = "numeric", type = "tel" })
                 @Html.ValidationMessageFor(m => m.ContactNo, "", new { @class = "text-danger" })
             </div>
-        </div>
-    </div>
-
-    <!-- Store details -->
-    <div class="app-card">
-        <h5 class="mb-3">Store Details</h5>
-        <div class="row g-3">
             <div class="col-12 col-md-6">
                 @Html.LabelFor(m => m.StoreName, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.StoreName, new { @class = "form-control" })
@@ -55,7 +47,9 @@
             </div>
             <div class="col-12 col-md-6">
                 @Html.LabelFor(m => m.Designation, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.Designation, new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.Designation,
+                new SelectList(new[]{"STAFF","BRAND","OWNER"}),
+                new {@class = "form-select"})
                 @Html.ValidationMessageFor(m => m.Designation, "", new { @class = "text-danger" })
             </div>
             <div class="col-12">
@@ -83,32 +77,55 @@
                 @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
             </div>
-        </div>
-    </div>
-
-    <!-- Login details -->
-    <div class="app-card">
-        <h5 class="mb-3">Login Details</h5>
-        <div class="row g-3">
             <div class="col-12 col-md-6">
                 @Html.LabelFor(m => m.Pass, new { @class = "form-label" })
-                @Html.PasswordFor(m => m.Pass, new { @class = "form-control", autocomplete = "new-password" })
+            <div class="input-group">
+                @Html.PasswordFor(m => m.Pass, new { @class = "form-control", placeholder = "Enter your password", autocomplete = "new-password" })
+                <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Show password">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
                 @Html.ValidationMessageFor(m => m.Pass, "", new { @class = "text-danger" })
             </div>
             <div class="col-12 col-md-6">
                 @Html.LabelFor(m => m.ConfirmPass, new { @class = "form-label" })
-                @Html.PasswordFor(m => m.ConfirmPass, new { @class = "form-control", autocomplete = "new-password" })
+                <div class="input-group">
+                    @Html.PasswordFor(m => m.ConfirmPass, new { @class = "form-control", placeholder = "Confirm your password", autocomplete = "new-password" })
+                    <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1" aria-label="Show password">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+
                 @Html.ValidationMessageFor(m => m.ConfirmPass, "", new { @class = "text-danger" })
             </div>
         </div>
-    </div>
 
-    <div class="app-actions">
-        <button type="submit" class="btn btn-primary">Register</button>
-        @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-secondary" })
-    </div>
-}
+        <div class="app-actions mt-4">
+            <button type="submit" class="btn btn-primary">Register</button>
+            @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-secondary" })
+        </div>
+        <p class ="text-center mt-3 mb-0">
+            Already have an account?
+            <a asp-controller="TechUser" asp-action="checkAuth">Login Here</a>
+        </p>
+    }
+    
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('.toggle-password');
+            if (!btn) return;
+
+            var input = btn.parentElement.querySelector('input');
+            var icon = btn.querySelector('i');
+            var show = input.type === 'password';
+
+            input.type = show ? 'text' : 'password';
+            icon.classList.toggle('bi-eye', !show);
+            icon.classList.toggle('bi-eye-slash', show);
+        });
+    </script>
 }
